@@ -1,0 +1,22 @@
+meta {
+  name: Update Project
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/v1/projects/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 80955301-f780-42e6-ac9e-003e08d5ef98
+}
+
+body:json {
+  {
+    "name": "Updated Project",
+    "description": "Updated description"
+  }
+}

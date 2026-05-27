@@ -1,0 +1,17 @@
+meta {
+  name: Get All Projects
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/v1/projects
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 0
+  size: 10
+  sort: name,asc
+}

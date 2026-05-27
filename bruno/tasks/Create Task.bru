@@ -1,0 +1,21 @@
+meta {
+  name: Create Task
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v1/tasks
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "My Task",
+    "description": "Task description",
+    "priority": "MEDIUM",
+    "status": "TODO",
+    "projectId": "00000000-0000-0000-0000-000000000000"
+  }
+}

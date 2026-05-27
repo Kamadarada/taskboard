@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: api
+  datasource:
+    url: jdbc:postgresql://ep-summer-salad-a4j1tr1d-pooler.us-east-1.aws.neon.tech/verceldb?sslmode=require
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
+  jpa:
+    hibernate:
+      #      ddl-auto: create-drop
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
