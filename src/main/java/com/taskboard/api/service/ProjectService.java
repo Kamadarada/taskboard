@@ -5,6 +5,7 @@ import com.taskboard.api.database.entity.project.ProjectEntity;
 import com.taskboard.api.database.repository.IProjectRepository;
 import com.taskboard.api.dto.request.ProjectRequestDto;
 import com.taskboard.api.dto.response.ProjectResponseDto;
+import com.taskboard.api.exception.ProjectNotFoundException;
 import com.taskboard.api.utils.mappers.ProjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,18 +35,18 @@ public class ProjectService {
     public ProjectResponseDto findById(UUID id) {
         return projectRepository.findById(id)
                 .map(projectMapper::toResponse)
-                .orElseThrow();
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found", id));
     }
 
     public void delete(UUID id) {
         ProjectEntity projectEntity = projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found", id));
         projectRepository.deleteById(projectEntity.getId());
     }
 
     public ProjectResponseDto update(UUID id, ProjectRequestDto projectDto) {
         ProjectEntity projectEntity = projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found", id));
 
         projectEntity.setName(projectDto.name());
         projectEntity.setDescription(projectDto.description());
