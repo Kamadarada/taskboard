@@ -7,6 +7,7 @@ import com.taskboard.api.database.repository.IProjectRepository;
 import com.taskboard.api.database.repository.ITaskRepository;
 import com.taskboard.api.dto.request.TaskRequestDto;
 import com.taskboard.api.dto.response.TaskResponseDto;
+import com.taskboard.api.exception.TaskNotFoundException;
 import com.taskboard.api.utils.mappers.TaskMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class TaskService {
 
     public TaskResponseDto create(TaskRequestDto taskDto) {
         ProjectEntity projectEntity = projectRepository.findById(taskDto.projectId())
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new TaskNotFoundException("Project not found", taskDto.projectId()));
 
         TaskEntity taskEntity = taskMapper.toEntity(taskDto, projectEntity);
         TaskEntity savedTask = taskRepository.save(taskEntity);
@@ -42,14 +43,14 @@ public class TaskService {
 
     public void delete(UUID id) {
         TaskEntity taskEntity = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new TaskNotFoundException("Project not found", id));
 
         taskRepository.deleteById(taskEntity.getId());
     }
 
     public TaskResponseDto update(@Valid TaskRequestDto taskDto, UUID id) {
         TaskEntity taskEntity = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new TaskNotFoundException("Project not found", id));
 
         taskEntity.setName(taskDto.name());
         taskEntity.setDescription(taskDto.description());
