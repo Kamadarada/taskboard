@@ -7,6 +7,7 @@ import com.taskboard.api.database.repository.IUserRepository;
 import com.taskboard.api.dto.request.AuthRequestDto;
 import com.taskboard.api.dto.request.TokenRequestDto;
 import com.taskboard.api.dto.response.TokenResponseDto;
+import com.taskboard.api.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
     private final IUserRepository userRepository;
+    private final UserService userService;
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
@@ -41,7 +43,7 @@ public class AuthController {
         var refreshToken = tokenDto.refreshToken();
         String userEmail = tokenProvider.verifyToken(refreshToken);
 
-        UserEntity user = userRepository.findByEmail(userEmail)
+        UserEntity user = userRepository.findByEmailAndIsVerifiedTrue(userEmail)
                 .orElseThrow();
 
         var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
@@ -49,5 +51,11 @@ public class AuthController {
         String newRefreshToken = tokenProvider.generateRefreshToken(authentication);
 
         return new TokenResponseDto(token, newRefreshToken);
+    }
+
+    @GetMapping("/verify")
+    @ResponseStatus(HttpStatus.OK)
+    public void verifyUser(@RequestParam String token){
+        userService.verify(token);
     }
 }

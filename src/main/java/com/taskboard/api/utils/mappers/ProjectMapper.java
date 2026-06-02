@@ -17,7 +17,7 @@ public class ProjectMapper {
                 .orElse(0);
 
         return new ProjectResponseDto(projectEntity.getId(), projectEntity.getName(), projectEntity.getDescription(),
-                totalTasks, projectEntity.getCreatedAt(), projectEntity.getUpdatedAt());
+                totalTasks, projectEntity.getCreatedAt(), projectEntity.getUpdatedAt(), projectEntity.getProjectOwner().getId());
     }
 
     public ProjectEntity toEntity(ProjectRequestDto projectRequestDto) {

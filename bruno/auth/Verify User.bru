@@ -1,0 +1,15 @@
+meta {
+  name: Verify User
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/v1/auth/verify
+  body: none
+  auth: none
+}
+
+params:query {
+  token: {{verificationToken}}
+}

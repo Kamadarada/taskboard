@@ -2,6 +2,7 @@ package com.taskboard.api.database.entity.project;
 
 import com.taskboard.api.database.BaseEntity;
 import com.taskboard.api.database.entity.task.TaskEntity;
+import com.taskboard.api.database.entity.user.UserEntity;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -30,4 +31,8 @@ public class ProjectEntity extends BaseEntity {
     // orphanRemoval = true -> remove tasks when project is removed
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TaskEntity> tasks = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "projectId")
+    private UserEntity projectOwner;
 }

@@ -23,4 +23,6 @@ public class UserController {
     public UserEntity createUserEntity(@Valid @RequestBody UserRequestDto userDto){
         return userService.create(userDto);
     }
+
+
 }

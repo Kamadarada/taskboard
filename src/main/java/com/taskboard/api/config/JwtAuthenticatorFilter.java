@@ -32,7 +32,7 @@ public class JwtAuthenticatorFilter extends OncePerRequestFilter {
 
         String token = authHeader.replaceFirst("Bearer ", "");
         String email = tokenProvider.verifyToken(token);
-        UserEntity user = userRepository.findByEmail(email)
+        UserEntity user = userRepository.findByEmailAndIsVerifiedTrue(email)
                         .orElseThrow(() -> new ServletException("User not found"));
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
